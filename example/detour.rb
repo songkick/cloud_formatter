@@ -6,7 +6,7 @@ class Detour < CloudFormatter::Spec
   template_version  "2010-09-09"
   
   mappings do
-    ami_ids "eu-west-1" => "ami-edc6fe99"
+    ami_ids "eu-west-1" => { "AMI" => "ami-edc6fe99" }
   end
   
   resource_type :mongo_instance do |key_name, ami_id|
@@ -23,7 +23,7 @@ class Detour < CloudFormatter::Spec
   end
   
   create do
-    mongo_instance "MongoInstanceAZa", "detour", ami_ids[ref("AWS::Region")]
+    mongo_instance "MongoInstanceAZa", "detour", ami_ids[ref("AWS::Region")]['AMI']
   end
 end
 
