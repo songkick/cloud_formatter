@@ -24,6 +24,7 @@ class Detour < CloudFormatter::Spec
   
   create do
     mongo_instance "MongoInstanceAZa", "detour", ami_ids[ref("AWS::Region")]
+    mongo_instance "MongoInstanceAZz", "another", ami_ids[ref("AWS::Region")]
   end
 end
 
@@ -53,6 +54,19 @@ describe CloudFormatter::DSL do
             "Tags" => [
               {"Key" => "Application", "Value" => {"Ref" => "AWS::StackName"}},
               {"Key" => "Name", "Value" => "detour"}
+            ]
+          }
+        },
+        "MongoInstanceAZz" => {
+          "Type" => "AWS::EC2::Instance",
+          "Properties" => {
+            "ImageId"           => {"Fn::FindInMap" => ["AmiIds", {"Ref" => "AWS::Region"}]},
+            "SecurityGroupIds"  => ["sg-abcd1234", {"Fn::FindInMap" => ["GroupIds", "security", "id"]}],
+            "SubnetId"          => "subnet-xxxxxx",
+            "InstanceType"      => "m1.medium",
+            "Tags" => [
+              {"Key" => "Application", "Value" => {"Ref" => "AWS::StackName"}},
+              {"Key" => "Name", "Value" => "another"}
             ]
           }
         }
