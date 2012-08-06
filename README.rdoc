@@ -3,6 +3,9 @@
 Generates JSON config for AWS CloudFormation using a Ruby DSL. See the +example+
 directory for, um, examples.
 
+CAVEAT EMPTOR: this is still experimental code, please don't use it unless you
+have a good understanding of CloudFormation already.
+
 
 == License
 
