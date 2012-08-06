@@ -5,7 +5,11 @@ module CloudFormatter
     end
     
     def self.jsonize(value)
-      value.respond_to?(:to_json_data) ? value.to_json_data : value
+      case value
+        when Array then value.map { |v| jsonize v }
+        else
+          value.respond_to?(:to_json_data) ? value.to_json_data : value
+      end
     end
     
     def mappings(&block)
@@ -13,7 +17,7 @@ module CloudFormatter
     end
     
     def resource_type(name, &block)
-      _resource_descriptors[name.to_s] = ResourceDescriptor.new(name, &block)
+      _resource_descriptors[name.to_s] = ResourceDescriptor.new(self, name, &block)
     end
     
     def create(&block)

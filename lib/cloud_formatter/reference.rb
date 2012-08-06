@@ -10,7 +10,7 @@ module CloudFormatter
     
     class Map
       def initialize(name)
-        @name = name
+        @name = name.to_s
       end
       
       def [](key)

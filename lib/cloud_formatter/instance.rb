@@ -1,7 +1,8 @@
 module CloudFormatter
   class Instance
-    def initialize
-      @type = nil
+    def initialize(template)
+      @template   = template
+      @type       = nil
       @properties = {}
     end
     
@@ -31,8 +32,12 @@ module CloudFormatter
       {TYPE => @type, PROPERTIES => @properties}
     end
     
-    def method_missing(field, value)
-      @current_map[DSL.format(field)] = DSL.jsonize(value)
+    def method_missing(field, *params)
+      if @template.reference_type(field.to_s) == :map
+        Reference::Map.new(field)
+      else
+        @current_map[DSL.format(field)] = DSL.jsonize(params.first)
+      end
     end
   end
 end

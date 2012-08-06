@@ -6,6 +6,7 @@ class Detour < CloudFormatter::Spec
   
   mappings do
     ami_ids "eu-west-1" => "ami-edc6fe99"
+    group_ids "id" => "sg-zxcv9876"
   end
   
   resource_type :mongo_instance do |key_name, ami_id|
@@ -13,7 +14,7 @@ class Detour < CloudFormatter::Spec
     
     properties do
       image_id            ami_id
-      security_group_ids  ["sg-abcd1234", "sg-zxcv9876"]
+      security_group_ids  ["sg-abcd1234", group_ids["id"]]
       subnet_id           "subnet-xxxxxx"
       instance_type       "m1.medium"
       
@@ -35,6 +36,9 @@ describe CloudFormatter::DSL do
       "Mappings" => {
         "AmiIds" => {
           "eu-west-1" => "ami-edc6fe99"
+        },
+        "GroupIds" => {
+          "id" => "sg-zxcv9876"
         }
       },
       
@@ -43,7 +47,7 @@ describe CloudFormatter::DSL do
           "Type" => "AWS::EC2::Instance",
           "Properties" => {
             "ImageId"           => {"Fn::FindInMap" => ["AmiIds", {"Ref" => "AWS::Region"}]},
-            "SecurityGroupIds"  => ["sg-abcd1234", "sg-zxcv9876"],
+            "SecurityGroupIds"  => ["sg-abcd1234", {"Fn::FindInMap" => ["GroupIds", "id"]}],
             "SubnetId"          => "subnet-xxxxxx",
             "InstanceType"      => "m1.medium",
             "Tags" => [
