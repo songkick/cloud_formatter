@@ -29,8 +29,8 @@ end
 describe CloudFormatter::DSL do
   it "generates JSON" do
     JSON.parse(Detour.to_json).should == {
-      "Description" => "Create a detour stack",
-      "AWSTemplateFormatVersion" => "2010-09-09",
+      "Description"               => "Create a detour stack",
+      "AWSTemplateFormatVersion"  => "2010-09-09",
       
       "Mappings" => {
         "AmiIds" => {
@@ -42,10 +42,10 @@ describe CloudFormatter::DSL do
         "MongoInstanceAZa" => {
           "Type" => "AWS::EC2::Instance",
           "Properties" => {
-            "ImageId" => {"Fn::FindInMap" => ["AmiIds", {"Ref" => "AWS::Region"}]},
-            "SecurityGroupIds" => ["sg-abcd1234", "sg-zxcv9876"],
-            "SubnetId" => "subnet-xxxxxx",
-            "InstanceType" => "m1.medium",
+            "ImageId"           => {"Fn::FindInMap" => ["AmiIds", {"Ref" => "AWS::Region"}]},
+            "SecurityGroupIds"  => ["sg-abcd1234", "sg-zxcv9876"],
+            "SubnetId"          => "subnet-xxxxxx",
+            "InstanceType"      => "m1.medium",
             "Tags" => [
               {"Key" => "Name", "Value" => "detour"}, {"Key" => "Application", "Value" => {"Ref" => "AWS::StackName"}}
             ]
