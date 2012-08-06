@@ -47,7 +47,8 @@ describe CloudFormatter::DSL do
             "SubnetId"          => "subnet-xxxxxx",
             "InstanceType"      => "m1.medium",
             "Tags" => [
-              {"Key" => "Name", "Value" => "detour"}, {"Key" => "Application", "Value" => {"Ref" => "AWS::StackName"}}
+              {"Key" => "Name", "Value" => "detour"},
+              {"Key" => "Application", "Value" => {"Ref" => "AWS::StackName"}}
             ]
           }
         }
