@@ -14,7 +14,7 @@ module CloudFormatter
       end
       
       def [](key)
-        Key.new(@name, key)
+        Key.new(@name, [key])
       end
     end
     
@@ -24,8 +24,12 @@ module CloudFormatter
         @key      = key
       end
       
+      def [](subkey)
+        Key.new(@map_name, @key + [subkey])
+      end
+      
       def to_json_data
-        {FIND_IN_MAP => [DSL.format(@map_name), DSL.jsonize(@key)]}
+        {FIND_IN_MAP => [DSL.format(@map_name)] + DSL.jsonize(@key)}
       end
     end
     

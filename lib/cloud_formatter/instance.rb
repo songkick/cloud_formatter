@@ -19,8 +19,9 @@ module CloudFormatter
     
     def tags(tag_map)
       list = @current_map[TAGS] ||= []
-      tag_map.each do |key, value|
-        list << {KEY => DSL.format(key), VALUE => DSL.jsonize(value)}
+      tag_map = Hash[tag_map.map { |key, value| [key.to_s, value] }]
+      tag_map.keys.sort.each do |key|
+        list << {KEY => DSL.format(key), VALUE => DSL.jsonize(tag_map[key])}
       end
     end
     

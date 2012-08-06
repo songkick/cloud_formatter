@@ -6,7 +6,7 @@ class Detour < CloudFormatter::Spec
   
   mappings do
     ami_ids "eu-west-1" => "ami-edc6fe99"
-    group_ids "id" => "sg-zxcv9876"
+    group_ids "security" => {"id" => "sg-zxcv9876"}
   end
   
   resource_type :mongo_instance do |key_name, ami_id|
@@ -14,7 +14,7 @@ class Detour < CloudFormatter::Spec
     
     properties do
       image_id            ami_id
-      security_group_ids  ["sg-abcd1234", group_ids["id"]]
+      security_group_ids  ["sg-abcd1234", group_ids["security"]["id"]]
       subnet_id           "subnet-xxxxxx"
       instance_type       "m1.medium"
       
@@ -38,7 +38,7 @@ describe CloudFormatter::DSL do
           "eu-west-1" => "ami-edc6fe99"
         },
         "GroupIds" => {
-          "id" => "sg-zxcv9876"
+          "security" => {"id" => "sg-zxcv9876"}
         }
       },
       
@@ -47,12 +47,12 @@ describe CloudFormatter::DSL do
           "Type" => "AWS::EC2::Instance",
           "Properties" => {
             "ImageId"           => {"Fn::FindInMap" => ["AmiIds", {"Ref" => "AWS::Region"}]},
-            "SecurityGroupIds"  => ["sg-abcd1234", {"Fn::FindInMap" => ["GroupIds", "id"]}],
+            "SecurityGroupIds"  => ["sg-abcd1234", {"Fn::FindInMap" => ["GroupIds", "security", "id"]}],
             "SubnetId"          => "subnet-xxxxxx",
             "InstanceType"      => "m1.medium",
             "Tags" => [
-              {"Key" => "Name", "Value" => "detour"},
-              {"Key" => "Application", "Value" => {"Ref" => "AWS::StackName"}}
+              {"Key" => "Application", "Value" => {"Ref" => "AWS::StackName"}},
+              {"Key" => "Name", "Value" => "detour"}
             ]
           }
         }
