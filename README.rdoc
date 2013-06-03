@@ -3,8 +3,15 @@
 Generates JSON config for AWS CloudFormation using a Ruby DSL. See the +example+
 directory for, um, examples.
 
-CAVEAT EMPTOR: this is still experimental code, please don't use it unless you
-have a good understanding of CloudFormation already.
+CAVEAT EMPTOR: this is experimental code, please don't use it unless you
+have a good understanding of CloudFormation already. 
+
+In particular, AWS resources have some attributes that can only be changed by
+deleting the old resource and creating a new one. You really need to
+understand what they are before playing with this :)
+
+At Songkick, we don't currently use CloudFormation, so this code isn't getting
+any attention.
 
 
 == License
